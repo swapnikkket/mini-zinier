@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jobRoutes = require('./routes/jobRoutes');
 
 const app = express();
 
@@ -11,5 +12,8 @@ app.use(express.json());
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', service: 'job-service' });
 });
+
+// Configure Job management routes
+app.use('/jobs', jobRoutes);
 
 module.exports = app;

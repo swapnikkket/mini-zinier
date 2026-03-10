@@ -27,8 +27,8 @@ const getJobs = async (req, res) => {
 const updateJobStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
-        const updatedJob = await jobService.updateJobStatus(id, status);
+        const { status, assignedTechnician } = req.body;
+        const updatedJob = await jobService.updateJobStatus(id, status, assignedTechnician);
 
         if (!updatedJob) {
             return res.status(404).json({ error: 'Job not found' });
@@ -40,8 +40,24 @@ const updateJobStatus = async (req, res) => {
     }
 };
 
+const getJobById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const job = await jobService.getJobById(id);
+
+        if (!job) {
+            return res.status(404).json({ error: 'Job not found' });
+        }
+
+        res.status(200).json(job);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 module.exports = {
     createJob,
     getJobs,
+    getJobById,
     updateJobStatus,
 };
